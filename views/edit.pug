@@ -1,0 +1,37 @@
+html
+  head
+    title JennyTag
+    script.
+      function removeParent(button) {
+        button.parentNode.remove();
+      }
+
+      function addLink() {
+        const container = document.getElementById('link-container');
+        const div = document.createElement('div');
+
+        const input = document.createElement('input');
+        input.name = "links[]";
+
+        const button = document.createElement('button');
+        button.type = "button";
+        button.innerText = "Remove";
+        button.onclick = function () {
+          removeParent(this);
+        };
+
+        div.appendChild(input);
+        div.appendChild(button);
+        container.appendChild(div);
+      }
+  body
+    form(action=`/${id}/edit` method="post")
+        button(type="button" onclick="addLink()") Add
+        button(type="submit") Submit
+        #link-container
+            each item in links
+                div
+                    input(name="links[]" value=item)
+                    button(type="button" onclick="removeParent(this)") Remove
+
+      

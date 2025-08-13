@@ -1,0 +1,22 @@
+html
+  head
+    title Tapiro
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/light.css")
+    script(type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js")
+    style.
+      .main {
+          width: 400px;
+          margin: 0 auto;
+        }
+  body
+    .main
+      form(action="/form/login" method="post")
+        input(type="hidden" name="tag" value=tag)
+        section 
+          sl-input(name="email" id="email" label="Email" required)
+        section 
+          sl-input(name="password" id="password" type="password" label="Password" required)
+        br
+        sl-button(type="submit") Register
+      

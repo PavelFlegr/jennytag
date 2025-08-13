@@ -1,7 +1,9 @@
 html
   head
-    title JennyTag
+    title Tapiro
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/light.css")
+    script(type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js")
     script.
       function removeParent(button) {
         button.parentNode.remove();
@@ -11,10 +13,10 @@ html
         const container = document.getElementById('link-container');
         const div = document.createElement('div');
 
-        const input = document.createElement('input');
+        const input = document.createElement('sl-input');
         input.name = "links[]";
 
-        const button = document.createElement('button');
+        const button = document.createElement('sl-button');
         button.type = "button";
         button.innerText = "Remove";
         button.onclick = function () {
@@ -25,14 +27,30 @@ html
         div.appendChild(button);
         container.appendChild(div);
       }
+    style.
+      form {
+        width: 500px
+      }
+      #link-container div {
+        display: flex;
+        margin-bottom: 10px;
+      }
+      .main {
+        width: 800px;
+        margin: 0 auto;
+      }
   body
-    form(action=`/${id}/edit` method="post")
-        button(type="button" onclick="addLink()") Add
-        button(type="submit") Submit
-        #link-container
-            each item in links
-                div
-                    input(name="links[]" value=item)
-                    button(type="button" onclick="removeParent(this)") Remove
+    .main
+      form(action=`/edit` method="post")
+          sl-button(type="button" onclick="addLink()") Add
+          sl-button(type="submit") Submit
+          br
+          br
+          #link-container
+              each item in links
+                  div
+                      sl-input(name="links[]" value=item)
+                      sl-button(type="button" onclick="removeParent(this)") Remove
+                  
 
       

@@ -1,0 +1,25 @@
+html
+  head
+    title Tapiro
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/light.css")
+    script(type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js")
+    style.
+      .main {
+        width: 400px;
+        margin: 0 auto;
+      }
+  body
+    .main
+      if loggedIn 
+        form(action="/form/assign" method="post")
+          input(type="hidden" value=id name="tag")
+          label Assign tag to your account?
+          sl-button(type="submit") Confirm
+      else
+        p
+          | To assign this tag 
+          a(href=`login?tag=${id}`) log in
+          |  or 
+          a(href=`register?tag=${id}`) register
+      

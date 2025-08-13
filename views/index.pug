@@ -1,8 +1,36 @@
-html 
-    head 
-        title="JennyTag"
-        meta(name="viewport" content="width=device-width, initial-scale=1.0")
+html
+  head
+    title Tapiro
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/light.css")
+    script(type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js")
+    style.
+      .main {
+        width: 800px;
+        margin: 0 auto;
+        text-align: center;
+      }
+      sl-button {
+        width: 400px;
+      }
+      a {
+        color: var(--sl-color-primary-600);
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      a:hover {
+        color: var(--sl-color-primary-500);
+        text-decoration: underline;
+      }
+
+      a:focus {
+        outline: var(--sl-focus-ring);
+        outline-offset: 2px;
+      }
     body
-        each item in links
-            li 
-                a(href=item)= item
+      .main
+          each item in links
+              div 
+                  a(href=item)
+                    sl-button= item

@@ -19,7 +19,8 @@
     "drizzle-orm": "^0.44.4",
     "express": "^5.1.0",
     "pug": "^3.0.3",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
   },
   "devDependencies": {
     "drizzle-kit": "^0.31.4",

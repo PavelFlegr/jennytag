@@ -1,7 +1,7 @@
 import express from 'express'
 import { auth } from './auth.js'
 import { db } from './db.js'
-import { linksTable, tagsTable } from './db/schema.ts'
+import { linksTable, tagsTable } from './db/schema.js'
 import { eq } from 'drizzle-orm'
 import { configDotenv } from 'dotenv'
 

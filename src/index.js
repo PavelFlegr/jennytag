@@ -1,11 +1,10 @@
+import "dotenv/config"
+
 import express from 'express'
 import { auth } from './auth.js'
 import { db } from './db.js'
 import { linksTable, tagsTable } from './db/schema.js'
 import { eq } from 'drizzle-orm'
-import { configDotenv } from 'dotenv'
-
-configDotenv()
 
 const app = express()
 const port = process.env.PORT
@@ -125,8 +124,7 @@ app.get("/", async (req, res) => {
 
 app.get('/:id', async (req, res) => {
     let id = req.params.id
-    let tag = await (await db.select().from(tagsTable).where(eq(tagsTable.id, id)))[0]
-    console.log(tag)
+    let tag = (await db.select().from(tagsTable).where(eq(tagsTable.id, id)))[0]
     if(!tag) {
         let session = await auth.api.getSession({headers: req.headers})
         return res.render("assign", {id: id, loggedIn: !!session, userId: session?.user?.id})

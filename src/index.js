@@ -3,9 +3,12 @@ import { auth } from './auth.js'
 import { db } from './db.js'
 import { linksTable, tagsTable } from './db/schema.js'
 import { eq } from 'drizzle-orm'
+import { configDotenv } from 'dotenv'
+
+configDotenv()
 
 const app = express()
-const port = 3000
+const port = process.env.PORT
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -28,7 +31,6 @@ app.post("/form/register", async (req, res) => {
     let name = req.body.name
     let password = req.body.password
 
-    console.log("bruh")
     let response = await auth.api.signUpEmail({
         body: {
             email,
@@ -38,7 +40,7 @@ app.post("/form/register", async (req, res) => {
         asResponse: true,
     })
 
-
+console.log(process.env.DB_FILE_NAME)
     response.headers.forEach((value, key) => res.setHeader(key, value))
     console.log(response.status)
     if(response.status == 200) {
@@ -97,7 +99,6 @@ app.get("/edit", async (req, res) => {
     }
     let userId = session.user.id
     let links = (await db.select().from(linksTable).where(eq(linksTable.userId, userId)))[0]
-    console.log(links)
     res.render("edit", {links: JSON.parse(links?.links ?? "[]")})
 })
 

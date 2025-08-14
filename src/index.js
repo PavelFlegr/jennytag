@@ -3,7 +3,7 @@ import "dotenv/config"
 import express from 'express'
 import { auth } from './auth.js'
 import { db } from './db.js'
-import { linksTable, tagsTable } from './db/schema.js'
+import { linksTable, tagsTable, user as userTable } from './db/schema.js'
 import { eq } from 'drizzle-orm'
 
 const app = express()
@@ -39,11 +39,14 @@ app.post("/form/register", async (req, res) => {
         asResponse: true,
     })
 
-console.log(process.env.DB_FILE_NAME)
     response.headers.forEach((value, key) => res.setHeader(key, value))
     console.log(response.status)
     if(response.status == 200) {
-        res.redirect(`/${tag}`)
+        if(tag) {
+            res.redirect(`/${tag}`)
+        } else {
+            res.redirect("/edit")
+        }
     } else {
         res.redirect("/register")
     }
@@ -107,19 +110,13 @@ app.post("/edit", async (req, res) => {
         return res.redirect("/login")
     }
     let userId = session.user.id
-    let links = JSON.stringify(req.body.links)
+    let links = JSON.stringify(req.body.links ?? [])
     await db.insert(linksTable).values({userId: userId, links}).onConflictDoUpdate({target: linksTable.userId, set: {links}})
     res.redirect(`/edit`)
 })
 
 app.get("/", async (req, res) => {
-    let session = await auth.api.getSession({headers: req.headers})
-    if(!session?.user?.id) {
-        return res.redirect("/login")
-    }
-    let userId = session.user.id
-    let links = (await db.select().from(linksTable).where(eq(linksTable.userId, userId)))[0]
-    res.render("index", {links: JSON.parse(links?.links ?? "[]")})
+    res.render("landing", {loggedIn: false})
 })
 
 app.get('/:id', async (req, res) => {
@@ -130,7 +127,8 @@ app.get('/:id', async (req, res) => {
         return res.render("assign", {id: id, loggedIn: !!session, userId: session?.user?.id})
     }
     let links = (await db.select().from(linksTable).where(eq(linksTable.userId, tag.userId)))[0]
-    res.render("index", {links: JSON.parse(links?.links ?? "[]")})
+    let user = (await db.select().from(userTable).where(eq(userTable.id, tag.userId)))[0]
+    res.render("tag", {links: JSON.parse(links?.links ?? "[]"), name: user.name})
 })
 
 app.listen(port, () => {

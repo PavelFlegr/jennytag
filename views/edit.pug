@@ -1,6 +1,6 @@
 html
   head
-    title Tapiro
+    title Tapiro - Edit Links
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
     link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/light.css")
     script(type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js")
@@ -12,13 +12,18 @@ html
       function addLink() {
         const container = document.getElementById('link-container');
         const div = document.createElement('div');
+        div.className = "link-row";
 
         const input = document.createElement('sl-input');
         input.name = "links[]";
+        input.placeholder = "Paste your link here";
+        input.className = "link-input";
 
         const button = document.createElement('sl-button');
         button.type = "button";
+        button.variant = "danger";
         button.innerText = "Remove";
+        button.style.marginLeft = "10px";
         button.onclick = function () {
           removeParent(this);
         };
@@ -28,29 +33,73 @@ html
         container.appendChild(div);
       }
     style.
-      form {
-        width: 500px
-      }
-      #link-container div {
+      body {
+        background: linear-gradient(135deg, #f8fafc 0%, #e0e7ef 100%);
+        min-height: 100vh;
         display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Segoe UI', Arial, sans-serif;
+      }
+      .edit-card {
+        width: 600px;
+        padding: 2.5rem 2rem 2rem 2rem;
+        background: #fff;
+        border-radius: 18px;
+        box-shadow: 0 4px 32px rgba(60, 72, 88, 0.12);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .edit-title {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: #2d3748;
+        letter-spacing: 1px;
+      }
+      .edit-subtitle {
+        font-size: 1rem;
+        color: #6b7280;
+        margin-bottom: 2rem;
+      }
+      form {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+      }
+      #link-container {
+        width: 100%;
+        margin-bottom: 1.5rem;
+      }
+      .link-input {
+        flex: 1;
+      }
+      .link-row {
+        display: flex;
+        align-items: center;
         margin-bottom: 10px;
       }
-      .main {
-        width: 800px;
-        margin: 0 auto;
+      sl-button.add-btn::part(base) {
+        width: 100%;
+      }
+      sl-button[type="submit"]::part(base) {
+        width: 100%;
+        font-size: 1.1rem;
       }
   body
-    .main
+    .edit-card
+      .edit-title Tapiro
+      .edit-subtitle Manage your profile links
       form(action=`/edit` method="post")
-          sl-button(type="button" onclick="addLink()") Add
-          sl-button(type="submit") Submit
-          br
-          br
-          #link-container
-              each item in links
-                  div
-                      sl-input(name="links[]" value=item)
-                      sl-button(type="button" onclick="removeParent(this)") Remove
-                  
+        #link-container
+          each item in links
+            .link-row
+              sl-input.link-input(name="links[]" value=item placeholder="Paste your link here")
+              sl-button(type="button" variant="danger" onclick="removeParent(this)" style="margin-left:10px") Remove
+        sl-button.add-btn(type="button" onclick="addLink()" variant="primary") Add Link
+        sl-button(type="submit" variant="success") Save
 
-      
+
+
